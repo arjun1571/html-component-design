@@ -3,14 +3,130 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MegaPersonals: Classified hookups</title>
-    <link href="./dist/styles.css" rel="stylesheet" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <title>Responsive Sidebar and Navbar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   </head>
-  <body class="">
-    <h1 class="bg-red-500">html component design</h1>
+  <body class="font-sans bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-blue-900 text-white p-4 flex justify-between items-center sticky top-0 w-full z-10">
+      <div class="text-xl font-bold text-white">Logo</div>
+      <div class="hidden lg:flex space-x-4">
+        <a href="#" class="hover:bg-blue-700 p-2 rounded">Home</a>
+        <a href="#" class="hover:bg-blue-700 p-2 rounded">About</a>
+      </div>
+      <button id="sidebarToggle" class="lg:hidden">
+        <i class="fas fa-bars"></i>
+      </button>
+    </nav>
+
+    <!-- Sidebar (Side Drawer) -->
+    <div
+      id="sidebar"
+      class="bg-blue-800 text-white w-64 fixed top-0 left-0 h-full p-4 transform -translate-x-full lg:translate-x-0 transition-all duration-300 ease-in-out z-20"
+    >
+      <!-- Collapse/Expand Button for Large Screens -->
+      <button id="collapseSidebar" class="hidden lg:block absolute top-4 right-4 text-white">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button id="closeSidebar" class="lg:hidden absolute top-4 right-4 text-white">
+        <i class="fas fa-times"></i>
+      </button>
+      <ul class="mt-8">
+        <li class="mb-4">
+          <a href="#" class="flex items-center hover:bg-blue-700 p-2 rounded">
+            <i class="fas fa-home mr-2"></i>
+            <span class="sidebar-text">Home</span>
+          </a>
+        </li>
+        <li class="mb-4">
+          <a href="#" class="flex items-center hover:bg-blue-700 p-2 rounded">
+            <i class="fas fa-user mr-2"></i>
+            <span class="sidebar-text">Profile</span>
+          </a>
+        </li>
+        <li class="mb-4">
+          <div
+            class="flex items-center justify-between hover:bg-blue-700 p-2 rounded cursor-pointer"
+            onclick="toggleSubMenu('settingsSubMenu')"
+          >
+            <div class="flex items-center">
+              <i class="fas fa-cog mr-2"></i>
+              <span class="sidebar-text">Settings</span>
+            </div>
+            <i class="fas fa-chevron-down text-sm"></i>
+          </div>
+          <ul id="settingsSubMenu" class="pl-6 mt-2 hidden">
+            <li class="mb-2">
+              <a href="#" class="flex items-center hover:bg-blue-700 p-2 rounded">
+                <i class="fas fa-sliders-h mr-2"></i>
+                <span class="sidebar-text">Preferences</span>
+              </a>
+            </li>
+            <li class="mb-2">
+              <a href="#" class="flex items-center hover:bg-blue-700 p-2 rounded">
+                <i class="fas fa-lock mr-2"></i>
+                <span class="sidebar-text">Security</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <main
+      id="mainContent"
+      class="flex-1 p-4 overflow-y-auto h-screen pt-16 lg:ml-64 transition-all duration-300 ease-in-out"
+    >
+      <h1 class="text-2xl font-bold mb-4">Main Content</h1>
+      <p>This is the main content area. Resize the screen to see the responsive sidebar.</p>
+      <p class="mt-4">Scroll down to test the scroll behavior.</p>
+      <div class="h-[1500px]"></div>
+    </main>
+
+    <script>
+      // Sidebar Toggle for Mobile
+      const sidebar = document.getElementById("sidebar");
+      const sidebarToggle = document.getElementById("sidebarToggle");
+      const closeSidebar = document.getElementById("closeSidebar");
+
+      sidebarToggle.addEventListener("click", () => {
+        sidebar.classList.remove("-translate-x-full");
+      });
+      closeSidebar.addEventListener("click", () => {
+        sidebar.classList.add("-translate-x-full");
+      });
+
+      // Collapse/Expand Sidebar for Large Screens
+      const collapseSidebar = document.getElementById("collapseSidebar");
+      const mainContent = document.getElementById("mainContent");
+      const sidebarTexts = document.querySelectorAll(".sidebar-text");
+
+      let isCollapsed = false;
+
+      collapseSidebar.addEventListener("click", () => {
+        isCollapsed = !isCollapsed;
+        if (isCollapsed) {
+          sidebar.classList.add("w-20");
+          sidebarTexts.forEach((text) => text.classList.add("hidden"));
+          mainContent.classList.remove("lg:ml-64");
+          mainContent.classList.add("lg:ml-20");
+          collapseSidebar.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        } else {
+          sidebar.classList.remove("w-20");
+          sidebarTexts.forEach((text) => text.classList.remove("hidden"));
+          mainContent.classList.remove("lg:ml-20");
+          mainContent.classList.add("lg:ml-64");
+          collapseSidebar.innerHTML = '<i class="fas fa-chevron-left"></i>';
+        }
+      });
+
+      // Toggle Submenu
+      function toggleSubMenu(id) {
+        const subMenu = document.getElementById(id);
+        subMenu.classList.toggle("hidden");
+      }
+    </script>
   </body>
 </html>
